@@ -1,0 +1,31 @@
+{
+    "name": "eclipsegc/classiphpy",
+    "type": "library",
+    "description": "A php library for generating php classes from various sources.",
+    "homepage": "https://github.com/EclipseGc/classiphpy",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Kris Vanderwater"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "drupal/plugins": "~8.0",
+        "drupal/annotations": "~8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Classiphpy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Classiphpy\\Tests\\": "tests/"
+        }
+    }
+}
+
