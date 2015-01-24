@@ -87,7 +87,7 @@ class DefaultPhpOutput implements OutputInterface {
 
   protected function getTemplateConstructor($class_id, DefinitionInterface $definition) {
     // Generate constructor.
-    $template = "    public function __construct(" . implode(', ', $definition->getProperties()) . ") {\n";
+    $template = "    public function __construct(\$" . implode(', $', $definition->getProperties()) . ") {\n";
     foreach ($definition->getProperties() as $property) {
       $template .= "        \$this->$property = \$$property;\n";
     }
