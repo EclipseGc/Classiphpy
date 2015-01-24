@@ -35,7 +35,7 @@ class Person {
 
     protected $last
 
-    public function __construct(first, last) {
+    public function __construct($first, $last) {
         $this->first = $first;
         $this->last = $last;
     }
