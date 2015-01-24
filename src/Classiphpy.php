@@ -30,7 +30,7 @@ class Classiphpy {
 
   public function build($data) {
     $this->getInputMethod()->parseInput($data);
-    return $this->getOutputMethod()->echoOut($this->getInputMethod());
+    return $this->getOutputMethod()->writeOut($this->getInputMethod());
   }
 
   public function getInputMethod() {
