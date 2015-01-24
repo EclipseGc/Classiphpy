@@ -27,7 +27,7 @@ class DefaultJsonInput extends InputBase {
       $data['defaults'] = [];
     }
     foreach ($data['classes'] as $class_id => $definition) {
-      if (empty($definition['parameters'])) {
+      if (empty($definition['properties'])) {
         return FALSE;
       }
     }
