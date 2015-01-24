@@ -25,7 +25,9 @@ class DefaultPhpOutput implements OutputInterface {
 
 
   public function writeOut(InputInterface $input) {
-    $this->verify();
+    if (!$this->verify()) {
+      throw new \Exception('Your destination folder is either not writable or does not exist.');
+    }
     $classes = $input->getClasses();
     foreach ($classes as $class_id => $definition) {
       $resource = fopen($this->getOutputDir() . '/' . "$class_id.php", 'w');
@@ -56,23 +58,23 @@ class DefaultPhpOutput implements OutputInterface {
       $template .= "use $class\n";
     }
     $template .= "\n";
-    $template .= "class $class_id {\n";
+    $template .= "class $class_id {\n\n";
     // Get class properties.
     foreach ($definition->getProperties() as $property) {
-      $template .= "    protected \$$property";
+      $template .= "    protected \$$property\n\n";
     }
     // Generate constructor.
     $template .= "    public function __construct(" . implode(', ', $definition->getProperties()) . ") {\n";
     foreach ($definition->getProperties() as $property) {
-      $template .= "        \$this->$property = \$$property;";
+      $template .= "        \$this->$property = \$$property;\n";
     }
-    $template .= "    }\n";
+    $template .= "    }\n\n";
     // End constructor.
     // Create getters.
     foreach ($definition->getProperties() as $property) {
       $template .= "    public function get". ucfirst($property) ."() {\n";
       $template .= "        return \$this->$property;\n";
-      $template .= "    }\n";
+      $template .= "    }\n\n";
     }
     // Close class.
     $template .= "}\n";
