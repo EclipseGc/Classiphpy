@@ -48,6 +48,17 @@ class DefaultPhpOutput implements OutputInterface {
   }
 
   public function getTemplateOutput($class_id, DefinitionInterface $definition) {
+    $template = $this->getTemplateHeader($class_id, $definition);
+    $template .= $this->getTemplateClass($class_id, $definition);
+    $template .= $this->getTemplateProperties($class_id, $definition);
+    $template .= $this->getTemplateConstructor($class_id, $definition);
+    $template .= $this->getTemplateGetters($class_id, $definition);
+    $template .= $this->getTemplateExtras($class_id, $definition);
+    $template .= $this->getTemplateFooter($class_id, $definition);
+    return $template;
+  }
+
+  protected function getTemplateHeader($class_id, DefinitionInterface $definition) {
     $template = "<?php\n\n";
     // Get class namespace.
     if ($definition->getNamespace()) {
@@ -58,27 +69,51 @@ class DefaultPhpOutput implements OutputInterface {
       $template .= "use $class\n";
     }
     $template .= "\n";
-    $template .= "class $class_id {\n\n";
+    return $template;
+  }
+
+  protected function getTemplateClass($class_id, DefinitionInterface $definition) {
+    return "class $class_id {\n\n";
+  }
+
+  protected function getTemplateProperties($class_id, DefinitionInterface $definition) {
     // Get class properties.
+    $template = '';
     foreach ($definition->getProperties() as $property) {
       $template .= "    protected \$$property\n\n";
     }
+    return $template;
+  }
+
+  protected function getTemplateConstructor($class_id, DefinitionInterface $definition) {
     // Generate constructor.
-    $template .= "    public function __construct(" . implode(', ', $definition->getProperties()) . ") {\n";
+    $template = "    public function __construct(" . implode(', ', $definition->getProperties()) . ") {\n";
     foreach ($definition->getProperties() as $property) {
       $template .= "        \$this->$property = \$$property;\n";
     }
     $template .= "    }\n\n";
     // End constructor.
+    return $template;
+  }
+
+  protected function getTemplateGetters($class_id, DefinitionInterface $definition) {
     // Create getters.
+    $template = '';
     foreach ($definition->getProperties() as $property) {
       $template .= "    public function get". ucfirst($property) ."() {\n";
       $template .= "        return \$this->$property;\n";
       $template .= "    }\n\n";
     }
-    // Close class.
-    $template .= "}\n";
     return $template;
   }
 
-} 
+  protected function getTemplateExtras($class_id, DefinitionInterface $definition) {
+    return '';
+  }
+
+  protected function getTemplateFooter($class_id, DefinitionInterface $definition) {
+    // Close class.
+    return "}\n";
+  }
+
+}
