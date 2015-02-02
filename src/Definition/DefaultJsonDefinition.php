@@ -132,11 +132,8 @@ class DefaultJsonDefinition implements DefinitionInterface {
       $expression = Parser::parseSnippet("\$this->{$name} = \$$name;");
       $constructor->getBody()->lastChild()->before($expression);
     }
-    if ($this->getProperties()) {
-      $constructor->getBody()->lastChild()->before(WhitespaceNode::create("\n"));
-    }
 
-    $doc->getNamespace($this->getNamespace())->append($class);
+    $doc->getNamespace($this->getNamespace())->getBody()->append($class);
     $formatter = FormatterFactory::getPsr2Formatter();
     $formatter->format($doc->getNamespace($this->getNamespace()));
     return $doc->getText();
