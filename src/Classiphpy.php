@@ -4,15 +4,17 @@
  * Contains Classiphpy.php.
  */
 
-use Classiphpy\Input\InputInterface;
+
 use Classiphpy\Output\OutputInterface;
+use Classiphpy\Processor\ProcessorInterface;
 
 class Classiphpy {
 
   /**
-   * @var Classiphpy\Input\InputInterface
+   * @var array
+   *   An array of DefinitionInterface implementing classes.
    */
-  protected $input;
+  protected $definitionClasses;
 
   /**
    * @var Classiphpy\Output\OutputInterface
@@ -20,21 +22,33 @@ class Classiphpy {
   protected $output;
 
   /**
-   * @param InputInterface $input
+   * @param array $definition_classes
    * @param OutputInterface $output
+   * @throws Exception
    */
-  function __construct(InputInterface $input, OutputInterface $output) {
-    $this->input = $input;
+  function __construct(array $definition_classes, OutputInterface $output) {
+    foreach ($definition_classes as $definition_class) {
+      if (!is_subclass_of($definition_class, '\Classiphpy\Definition\DefinitionInterface')) {
+        throw new \Exception(sprintf('The %s class is not an instance of \Classiphpy\Definition\DefinitionInterface', $definitionClass));
+      }
+    }
+    $this->definitionClasses = $definition_classes;
     $this->output = $output;
   }
 
-  public function build($data) {
-    $this->getInputMethod()->parseInput($data);
-    return $this->getOutputMethod()->writeOut($this->getInputMethod());
+  public function build($data, ProcessorInterface $processor) {
+    $data = json_decode($data, TRUE);
+    $classes = [];
+    foreach ($this->getDefinitionClasses() as $definitionClass) {
+      /** @var $definitionClass \Classiphpy\Definition\DefinitionInterface */
+      $test = $definitionClass::iteratorFactory($data);
+      $classes += $test;
+    }
+    return $this->getOutputMethod()->writeOut($processor->process($classes, $data));
   }
 
-  public function getInputMethod() {
-    return $this->input;
+  public function getDefinitionClasses() {
+    return $this->definitionClasses;
   }
 
   public function getOutputMethod() {

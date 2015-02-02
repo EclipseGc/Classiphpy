@@ -1,6 +1,7 @@
 index.php
 vendor/*
 composer.lock
+composer.phar
 .idea
 *.iml
 .htaccess

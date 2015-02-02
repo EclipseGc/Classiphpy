@@ -10,11 +10,13 @@ use Classiphpy\Input\InputInterface;
 
 interface OutputInterface {
 
-  public function writeOut(InputInterface $input);
+  /**
+   * @param \Classiphpy\File\File[] $files
+   * @return bool
+   */
+  public function writeOut(array $files);
 
   public function verify();
 
   public function getOutputDir();
-
-  public function getTemplateOutput($class_id, DefinitionInterface $definition);
 }

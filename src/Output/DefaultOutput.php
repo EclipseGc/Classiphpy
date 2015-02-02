@@ -9,7 +9,7 @@ namespace Classiphpy\Output;
 use Classiphpy\Input\InputInterface;
 use Classiphpy\Definition\DefinitionInterface;
 
-class DefaultPhpOutput implements OutputInterface {
+class DefaultOutput implements OutputInterface {
 
   /**
    * @var string
@@ -23,15 +23,21 @@ class DefaultPhpOutput implements OutputInterface {
     $this->outputDirectory = $outputDirectory;
   }
 
-
-  public function writeOut(InputInterface $input) {
+  public function writeOut(array $files) {
     if (!$this->verify()) {
       throw new \Exception('Your destination folder is either not writable or does not exist.');
     }
-    $classes = $input->getClasses();
-    foreach ($classes as $class_id => $definition) {
-      $resource = fopen($this->getOutputDir() . '/' . "$class_id.php", 'w');
-      fwrite($resource, $this->getTemplateOutput($class_id, $definition));
+    foreach ($files as $file) {
+      /** @var \Classiphpy\File\File $file */
+      $dirs = explode(DIRECTORY_SEPARATOR, $file->getPath());
+      $current_dir = $this->getOutputDir();
+      foreach ($dirs as $dir) {
+        $current_dir .=  DIRECTORY_SEPARATOR . $dir;
+        if (!is_dir($current_dir)) {
+          mkdir($current_dir);
+        }
+      }
+      file_put_contents($this->getOutputDir() . DIRECTORY_SEPARATOR . $file->getFullFilePath(), $file->getContents());
     }
   }
 
@@ -47,7 +53,7 @@ class DefaultPhpOutput implements OutputInterface {
     return $this->outputDirectory;
   }
 
-  public function getTemplateOutput($class_id, DefinitionInterface $definition) {
+  /**public function getTemplateOutput($class_id, DefinitionInterface $definition) {
     $template = $this->getTemplateHeader($class_id, $definition);
     $template .= $this->getTemplateClass($class_id, $definition);
     $template .= $this->getTemplateProperties($class_id, $definition);
@@ -114,6 +120,6 @@ class DefaultPhpOutput implements OutputInterface {
   protected function getTemplateFooter($class_id, DefinitionInterface $definition) {
     // Close class.
     return "}\n";
-  }
+  }*/
 
 }
