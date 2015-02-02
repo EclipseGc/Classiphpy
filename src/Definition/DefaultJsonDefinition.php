@@ -131,6 +131,10 @@ class DefaultJsonDefinition implements DefinitionInterface {
       $constructor->appendParameter(ParameterNode::create($name));
       $expression = Parser::parseSnippet("\$this->{$name} = \$$name;");
       $constructor->getBody()->lastChild()->before($expression);
+      $getter = ClassMethodNode::create('get' . ucfirst($name));
+      $class->appendMethod($getter);
+      $getter_expression = Parser::parseSnippet("return \$this->{$name};");
+      $getter->getBody()->lastChild()->before(($getter_expression));
     }
 
     $doc->getNamespace($this->getNamespace())->getBody()->append($class);
