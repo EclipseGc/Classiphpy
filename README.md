@@ -4,50 +4,76 @@ Classiphpy is a PHP library designed to read definition data from sources such a
 ##Example
 The DefaultJsonInput class included in Classiphpy expects an input along these lines:
 
-```javascript
-{
-  "defaults":{
-    "namespace":"EclipseGc"
-  },
-  "classes":{
-    "Person":{
-      "properties":[
+```php
+<?php
+$data = [
+  "defaults" => [
+    "namespace" => "EclipseGc"
+  ],
+  "classes" => [
+    "Person" => [
+      "properties" => [
         "first",
         "last"
       ],
-      "namespace":"EclipseGc\\Person"
-    }
-  }
-}
+      "namespace" => "EclipseGc\\Person",
+    ],
+    "Animal" => [
+      "properties" => [
+        "kingdom",
+        "phylum",
+        "genus",
+        "species"
+      ],
+      "namespace" => "EclipseGc\\Animal",
+    ]
+  ]
+];
 ```
 
 Run through the DefaultPhpOutput class and this json would generate the following PHP.
 
 ```php
 <?php
+namespace EclipseGc\Animal;
 
-namespace EclipseGc\Person
+class Animal
+{
+    protected $species;
 
+    protected $genus;
 
-class Person {
+    protected $phylum;
 
-    protected $first
+    protected $kingdom;
 
-    protected $last
-
-    public function __construct($first, $last) {
-        $this->first = $first;
-        $this->last = $last;
+    public function __construct($kingdom, $phylum, $genus, $species)
+    {
+        $this->kingdom = $kingdom;
+        $this->phylum = $phylum;
+        $this->genus = $genus;
+        $this->species = $species;
     }
 
-    public function getFirst() {
-        return $this->first;
+    public function getKingdom()
+    {
+        return $this->kingdom;
     }
 
-    public function getLast() {
-        return $this->last;
+    public function getPhylum()
+    {
+        return $this->phylum;
     }
 
+    public function getGenus()
+    {
+        return $this->genus;
+    }
+
+    public function getSpecies()
+    {
+        return $this->species;
+    }
 }
 ```
 
@@ -57,11 +83,10 @@ In the above example, to actually bootstrap this, we'd only need to instantiate 
 ```php
 <?php
 
-$input = new \Classiphpy\Input\DefaultJsonInput('\Classiphpy\Definition\DefaultJsonDefinition');
-$output = new \Classiphpy\Output\DefaultPhpOutput('/tmp/classiphpy');
-$test = new Classiphpy($input, $output);
-
-$test->build($json);
+$output = new \Classiphpy\Output\DefaultOutput('/tmp/classiphpy');
+$test = new Classiphpy(['\Classiphpy\Definition\DefaultJsonDefinition'], $output);
+$processor = new \Classiphpy\Processor\PSR4PhpProcessor('src');
+$test->build($data, $processor);
 
 ?>
 ```
