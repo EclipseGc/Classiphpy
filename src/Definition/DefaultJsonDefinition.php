@@ -126,7 +126,6 @@ class DefaultJsonDefinition implements DefinitionInterface {
     $class->appendMethod($constructor);
 
     foreach ($this->getProperties() as $name) {
-      //$default = Node::fromValue($default_value);
       $class->createProperty($name, NULL, 'protected');
       $constructor->appendParameter(ParameterNode::create($name));
       $expression = Parser::parseSnippet("\$this->{$name} = \$$name;");
