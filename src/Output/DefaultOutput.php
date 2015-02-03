@@ -6,6 +6,12 @@
 
 namespace Classiphpy\Output;
 
+/**
+ * Class DefaultOutput
+ * @package Classiphpy\Output
+ *
+ * Write File classes to disk.
+ */
 class DefaultOutput implements OutputInterface {
 
   /**

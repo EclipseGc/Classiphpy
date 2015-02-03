@@ -14,32 +14,73 @@ use Pharborist\Objects\ClassNode;
 use Pharborist\Parser;
 use Pharborist\RootNode;
 
+/**
+ * Class DefaultDefinition
+ * @package Classiphpy\Definition
+ *
+ * The default class definition class.
+ */
 class DefaultDefinition implements DefinitionInterface {
 
+  /**
+   * The class name.
+   *
+   * @var string
+   */
   protected $name;
 
+  /**
+   * The class namespace.
+   *
+   * @var string
+   */
   protected $namespace;
 
+  /**
+   * The properties of this class.
+   *
+   * @var array
+   */
   protected $properties = [];
 
+  /**
+   * @param string $name
+   *   The class name.
+   * @param string $namespace
+   *   The class namespace.
+   * @param array $properties
+   *   The properties of this class.
+   */
   function __construct($name, $namespace, array $properties) {
     $this->name = $name;
     $this->namespace = $namespace;
     $this->properties = $properties;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getName() {
     return $this->name;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getNamespace() {
     return $this->namespace;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getProperties() {
     return $this->properties;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getDependencies() {
     return [];
   }
@@ -117,6 +158,11 @@ class DefaultDefinition implements DefinitionInterface {
     return 'The json array failed validation.';
   }
 
+  /**
+   * A helper function to ease exception catching in the __toString() method.
+   *
+   * @return string
+   */
   protected function toString() {
     $doc = RootNode::create($this->getNamespace());
     $class = ClassNode::create($this->getName());
@@ -140,10 +186,14 @@ class DefaultDefinition implements DefinitionInterface {
     return $doc->getText();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function __toString() {
     try {
       return $this->toString();
     }
+    /* @todo throw a custom exception */
     catch (\Exception $e) {
       print_r($e);
       return "\n";
