@@ -84,7 +84,7 @@ In the above example, to actually bootstrap this, we'd only need to inform the C
 <?php
 
 $output = new \Classiphpy\Output\DefaultOutput('/tmp/classiphpy');
-$test = new Classiphpy(['\Classiphpy\Definition\DefaultJsonDefinition'], $output);
+$test = new Classiphpy(['\Classiphpy\Definition\DefaultDefinition'], $output);
 $processor = new \Classiphpy\Processor\PSR4PhpProcessor('src');
 $test->build($data, $processor);
 
