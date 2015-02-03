@@ -181,6 +181,7 @@ class DefaultDefinition implements DefinitionInterface {
     }
 
     $doc->getNamespace($this->getNamespace())->getBody()->append($class);
+    /* @todo dispatch an event to allow subscribers to alter $doc */
     $formatter = FormatterFactory::getPsr2Formatter();
     $formatter->format($doc->getNamespace($this->getNamespace()));
     return $doc->getText();
