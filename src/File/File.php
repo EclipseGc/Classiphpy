@@ -7,6 +7,14 @@
 namespace Classiphpy\File;
 
 
+/**
+ * Class File
+ * @package Classiphpy\File
+ *
+ * A class which represent the name, extension, path and contents of a file.
+ *
+ * @todo Determine if this class warrants an interface.
+ */
 class File {
 
   /**
