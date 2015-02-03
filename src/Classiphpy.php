@@ -37,7 +37,6 @@ class Classiphpy {
   }
 
   public function build($data, ProcessorInterface $processor) {
-    $data = json_decode($data, TRUE);
     $classes = [];
     foreach ($this->getDefinitionClasses() as $definitionClass) {
       /** @var $definitionClass \Classiphpy\Definition\DefinitionInterface */

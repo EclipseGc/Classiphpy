@@ -9,14 +9,12 @@ namespace Classiphpy\Definition;
 
 use Pharborist\FormatterFactory;
 use Pharborist\Functions\ParameterNode;
-use Pharborist\Node;
 use Pharborist\Objects\ClassMethodNode;
 use Pharborist\Objects\ClassNode;
 use Pharborist\Parser;
 use Pharborist\RootNode;
-use Pharborist\WhitespaceNode;
 
-class DefaultJsonDefinition implements DefinitionInterface {
+class DefaultDefinition implements DefinitionInterface {
 
   protected $name;
 
