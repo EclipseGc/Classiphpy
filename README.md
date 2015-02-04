@@ -57,12 +57,28 @@ namespace EclipseGc\Animal;
 
 class Animal
 {
+    /**
+     * @var string species
+     * The species to which the animal belongs.
+     */
     protected $species;
 
+    /**
+     * @var string genus
+     * The genus to which the animal belongs.
+     */
     protected $genus;
 
+    /**
+     * @var string phylum
+     * The phylum to which the animal belongs.
+     */
     protected $phylum;
 
+    /**
+     * @var string kingdom
+     * The kingdom to which the animal belongs.
+     */
     protected $kingdom;
 
     public function __construct($kingdom, $phylum, $genus, $species)
@@ -73,21 +89,33 @@ class Animal
         $this->species = $species;
     }
 
+    /**
+     * Gets the kingdom value.
+     */
     public function getKingdom()
     {
         return $this->kingdom;
     }
 
+    /**
+     * Gets the phylum value.
+     */
     public function getPhylum()
     {
         return $this->phylum;
     }
 
+    /**
+     * Gets the genus value.
+     */
     public function getGenus()
     {
         return $this->genus;
     }
 
+    /**
+     * Gets the species value.
+     */
     public function getSpecies()
     {
         return $this->species;
