@@ -7,6 +7,9 @@
 namespace Classiphpy\Definition;
 
 
+use Pharborist\DocCommentNode;
+use Pharborist\DocCommentTest;
+use Pharborist\Filter;
 use Pharborist\FormatterFactory;
 use Pharborist\Functions\ParameterNode;
 use Pharborist\Objects\ClassMethodNode;
@@ -169,13 +172,21 @@ class DefaultDefinition implements DefinitionInterface {
     $constructor = ClassMethodNode::create('__construct');
     $class->appendMethod($constructor);
 
-    foreach ($this->getProperties() as $name) {
-      $class->createProperty($name, NULL, 'protected');
+    foreach ($this->getProperties() as $name => $info) {
+      $class->createProperty($name, isset($info['default']) ? $info['default'] : NULL, 'protected');
+      if (isset($info['description'])) {
+        $docString = "@var {$info['type']} $name\n  {$info['description']}";
+      }
+      else {
+        $docString = "@var {$info['type']} $name";
+      }
+      $class->getProperty($name)->closest(Filter::isInstanceOf('\Pharborist\Objects\ClassMemberListNode'))->setDocComment(DocCommentNode::create($docString));
       $constructor->appendParameter(ParameterNode::create($name));
       $expression = Parser::parseSnippet("\$this->{$name} = \$$name;");
       $constructor->getBody()->lastChild()->before($expression);
       $getter = ClassMethodNode::create('get' . ucfirst($name));
       $class->appendMethod($getter);
+      $class->getMethod('get' . ucfirst($name))->setDocComment(DocCommentNode::create("Gets the $name value."));
       $getter_expression = Parser::parseSnippet("return \$this->{$name};");
       $getter->getBody()->lastChild()->before(($getter_expression));
     }
