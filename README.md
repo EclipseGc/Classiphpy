@@ -13,17 +13,35 @@ $data = [
   "classes" => [
     "Person" => [
       "properties" => [
-        "first",
-        "last"
+        "first" => [
+          'type' => 'string',
+          'description' => 'The first name of the person.',
+        ],
+        "last" => [
+          'type' => 'string',
+          'description' => 'the last name of the person.',
+        ]
       ],
       "namespace" => "EclipseGc\\Person",
     ],
     "Animal" => [
       "properties" => [
-        "kingdom",
-        "phylum",
-        "genus",
-        "species"
+        "kingdom" => [
+          'type' => 'string',
+          'description' => 'The kingdom to which the animal belongs.'
+        ],
+        "phylum" => [
+          'type' => 'string',
+          'description' => 'The phylum to which the animal belongs.'
+        ],
+        "genus" => [
+          'type' => 'string',
+          'description' => 'The genus to which the animal belongs.'
+        ],
+        "species" => [
+          'type' => 'string',
+          'description' => 'The species to which the animal belongs.'
+        ],
       ],
       "namespace" => "EclipseGc\\Animal",
     ]
