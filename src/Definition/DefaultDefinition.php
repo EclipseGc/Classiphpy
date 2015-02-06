@@ -172,15 +172,18 @@ class DefaultDefinition implements DefinitionInterface {
     $constructor = ClassMethodNode::create('__construct');
     $class->appendMethod($constructor);
 
+    $constructorDocString = '';
     foreach ($this->getProperties() as $name => $info) {
       $class->createProperty($name, isset($info['default']) ? $info['default'] : NULL, 'protected');
       if (isset($info['description'])) {
-        $docString = "@var {$info['type']} $name\n  {$info['description']}";
+        $propertyDocString = "@var {$info['type']} $name\n  {$info['description']}";
+        $constructorDocString .= "@param {$info['type']} $name\n  {$info['description']}\n\n";
       }
       else {
-        $docString = "@var {$info['type']} $name";
+        $propertyDocString = "@var {$info['type']} $name";
+        $constructorDocString .= "@param {$info['type']} $name\n\n";
       }
-      $class->getProperty($name)->closest(Filter::isInstanceOf('\Pharborist\Objects\ClassMemberListNode'))->setDocComment(DocCommentNode::create($docString));
+      $class->getProperty($name)->closest(Filter::isInstanceOf('\Pharborist\Objects\ClassMemberListNode'))->setDocComment(DocCommentNode::create($propertyDocString));
       $constructor->appendParameter(ParameterNode::create($name));
       $expression = Parser::parseSnippet("\$this->{$name} = \$$name;");
       $constructor->getBody()->lastChild()->before($expression);
@@ -190,6 +193,7 @@ class DefaultDefinition implements DefinitionInterface {
       $getter_expression = Parser::parseSnippet("return \$this->{$name};");
       $getter->getBody()->lastChild()->before(($getter_expression));
     }
+    $class->getMethod('__construct')->setDocComment(DocCommentNode::create($constructorDocString));
 
     $doc->getNamespace($this->getNamespace())->getBody()->append($class);
     /* @todo dispatch an event to allow subscribers to alter $doc */

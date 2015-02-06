@@ -30,7 +30,7 @@ interface DefinitionInterface {
    *
    * @param array $data
    *   The array from which to generate class definitions.
-   * @return DefinitionInterface[]
+   * @return \Classiphpy\Definition\DefinitionInterface[]
    */
   public static function iteratorFactory(array $data);
 
