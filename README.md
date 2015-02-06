@@ -81,6 +81,19 @@ class Animal
      */
     protected $kingdom;
 
+    /**
+     * @param string kingdom
+     * The kingdom to which the animal belongs.
+     *
+     * @param string phylum
+     * The phylum to which the animal belongs.
+     *
+     * @param string genus
+     * The genus to which the animal belongs.
+     *
+     * @param string species
+     * The species to which the animal belongs.
+     */
     public function __construct($kingdom, $phylum, $genus, $species)
     {
         $this->kingdom = $kingdom;
