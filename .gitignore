@@ -1,4 +1,5 @@
 index.php
+cloud-api.php
 vendor/*
 composer.lock
 composer.phar
